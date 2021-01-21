@@ -1,0 +1,27 @@
+local heading = 254.5
+local vehicle = nil
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(10)
+        if GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(-1)), -50.74, -1095.46, 25.52, true) < 40 then --Changer les coordonnés / Change coordinate
+            if DoesEntityExist(vehicle) == false then
+                RequestModel(GetHashKey('bmws')) --Changer nom du véhicule / Name car
+                while not HasModelLoaded(GetHashKey('bmws')) do --Changer nom du véhicule / Name car
+                    Wait(1)
+                end
+                vehicle = CreateVehicle(GetHashKey('Nom de la voiture'), -50.74, -1095.46, 25.52, heading, false, false) --Changer nom du véhicule / Name car
+                FreezeEntityPosition(vehicle, true)
+                SetEntityInvincible(vehicle, true)
+                SetEntityCoords(vehicle, -50.74, -1095.46, 25.52, false, false, false, true) --Changer les coordonnés
+                local props = ESX.Game.GetVehicleProperties(vehicle)
+                props['wheelColor'] = 147
+                props['plate'] = "Hamza" --Changer nom de la plaque
+                ESX.Game.SetVehicleProperties(vehicle, props)
+            else
+                SetEntityHeading(vehicle, heading)
+                heading = heading+0.1
+            end
+        end
+    end
+end)
